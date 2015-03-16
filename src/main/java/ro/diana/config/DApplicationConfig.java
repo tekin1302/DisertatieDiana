@@ -26,6 +26,7 @@ public class DApplicationConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/protected/**").addResourceLocations("/protected/");
     }
 
     @Bean

@@ -12,6 +12,7 @@
         <logout logout-url="/logout" />
 
 
+        <intercept-url pattern="/protected/**" access="IS_AUTHENTICATED" />
         <intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />

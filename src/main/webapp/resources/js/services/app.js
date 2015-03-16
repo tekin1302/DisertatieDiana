@@ -37,18 +37,35 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                     });
             };
 
-            authService.isAuthenticated = function () {
-                return !!Session.userId;
-            };
-
-            authService.isAuthorized = function (authorizedRoles) {
-                if (!angular.isArray(authorizedRoles)) {
-                    authorizedRoles = [authorizedRoles];
-                }
-                return (authService.isAuthenticated() &&
-                    authorizedRoles.indexOf(Session.userRole) !== -1);
-            };
-
+            checkAuthenticated = function (authorizedRoles) {
+                $http.get('protected/authentication_check.gif', {
+                    ignoreAuthModule: 'ignoreAuthModule'
+                }).success(function (data, status, headers, config) {
+                    if (!Session.login) {
+                        Account.get(function(data) {
+                            Session.create(data.login, data.firstName, data.lastName, data.email, data.roles,data.gender);
+                            $rootScope.account = Session;
+                            if (!$rootScope.isAuthorized(authorizedRoles)) {
+                                // user is not allowed
+                                $rootScope.$broadcast("event:auth-notAuthorized");
+                            } else {
+                                $rootScope.$broadcast("event:auth-loginConfirmed");
+                            }
+                        });
+                    }else{
+                        if (!$rootScope.isAuthorized(authorizedRoles)) {
+                            // user is not allowed
+                            $rootScope.$broadcast("event:auth-notAuthorized");
+                        } else {
+                            $rootScope.$broadcast("event:auth-loginConfirmed");
+                        }
+                    }
+                }).error(function (data, status, headers, config) {
+                    if (!$rootScope.isAuthorized(authorizedRoles)) {
+                        $rootScope.$broadcast('event:auth-loginRequired', data);
+                    }
+                });
+            }
             return authService;
         })
         .config(function ($routeProvider, USER_ROLES) {
@@ -91,19 +108,11 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
             }];
             $httpProvider.responseInterceptors.push(interceptor);
         })
-        .run(function ($rootScope, $location, AuthService) {
+        .run(function ($rootScope, $location, AuthService, Session, USER_ROLES) {
+            $rootScope.authenticated = false;
+
             $rootScope.$on('$routeChangeStart', function (event, next) {
-                var authorizedRoles = next.data.authorizedRoles;
-                if (!AuthService.isAuthorized(authorizedRoles)) {
-                    event.preventDefault();
-                    if (AuthService.isAuthenticated()) {
-                        // user is not allowed
-                        $location = "/login";
-                    } else {
-                        // user is not logged in
-                        $location = "/login";
-                    }
-                }
+                AuthService.checkAuthenticated(next.data.authorizedRoles);
             });
         })
 
