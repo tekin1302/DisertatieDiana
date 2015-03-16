@@ -33,7 +33,7 @@ public class DUserDetailsService implements UserDetailsService {
             authUser.setPassword(user.getPassword());
             authUser.setEnabled(true);
             authUser.setUserId(user.getId());
-            authUser.setUsername(user.getEmail());
+            authUser.setEmail(user.getEmail());
             authUser.addAuthority(user.getRole());
 
             logger.debug("User login");

@@ -13,32 +13,26 @@ import java.util.HashMap;
  */
 public class DUserDetails implements UserDetails {
 
-    private String username;
+    private String email;
     private String password;
     private Integer userId;
-    private Integer role;
+    private String role;
 
     private boolean enabled;
     private Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
     private HashMap<String, Object> authoritiesHash;
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-
-    public Integer getRole() {
+    public String getRole() {
         return role;
     }
-
-    public void setRole(Integer role) {
-        this.role = role;
-    }
-
 
     public void setAuthorities(Collection<GrantedAuthority> authorities) {
         this.authorities = authorities;
@@ -75,7 +69,7 @@ public class DUserDetails implements UserDetails {
      * @see org.springframework.security.core.userdetails.UserDetails#getUsername()
      */
     public String getUsername() {
-        return username;
+        return email;
     }
 
     /* (non-Javadoc)
@@ -134,7 +128,7 @@ public class DUserDetails implements UserDetails {
 
     @Override
     public String toString() {
-        return "AuthenticatedUser [username=" + username + ", password="
+        return "AuthenticatedUser [email=" + email + ", password="
                 + password + ", userId=" + userId
                 + ", enabled=" + enabled + ", authorities=" + authorities
                 + ", authoritiesHash=" + authoritiesHash + "]";

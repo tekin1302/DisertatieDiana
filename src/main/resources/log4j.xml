@@ -28,9 +28,9 @@
         <param name="StartTls" value="true" />
         <param name="SMTPDebug" value="true" />
         <param name="Threshold" value="ERROR" />
-        <param name="SMTPUsername" value="java.mail.username@gmail.com" />
+        <param name="SMTPUsername" value="java.mail.email@gmail.com" />
         <param name="SMTPPassword" value="JavaMail123" />
-        <param name="From" value="java.mail.username@gmail.com" />
+        <param name="From" value="java.mail.email@gmail.com" />
         <param name="To" value="tekin1302@gmail.com" />
         <param name="Subject" value="Error detected on server" />
         <layout class="org.apache.log4j.PatternLayout">
