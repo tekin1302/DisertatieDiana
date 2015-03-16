@@ -7,15 +7,14 @@
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <!-- HTTP security configurations -->
-    <http auto-config="true" access-denied-page="/accessDenied" >
-        <form-login login-processing-url="/loginP" login-page="/login" authentication-failure-url="/login?login_error=t" />
+    <http auto-config="true" access-denied-page="/login/denied">
+        <form-login login-processing-url="/login/authenticate" login-page="/login/needAuth" authentication-failure-url="/login/needAuth" />
         <logout logout-url="/logout" />
 
-
-        <intercept-url pattern="/protected/**" access="IS_AUTHENTICATED" />
+        <intercept-url pattern="/protected/**" access="IS_AUTHENTICATED_FULLY" />
         <intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/login/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/**" access="ROLE_USER" />
     </http>
 

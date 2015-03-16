@@ -25,7 +25,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
             };
             return this;
         })
-        .factory('AuthService', function ($http, Session) {
+        .factory('AuthService', function ($rootScope, $http, Session) {
             var authService = {};
 
             authService.login = function (credentials) {
@@ -37,7 +37,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                         return user;
                     });
             };
-            isAuthorized = function (authorizedRoles) {
+            authService.isAuthorized = function (authorizedRoles) {
                 if (!angular.isArray(authorizedRoles)) {
                     authorizedRoles = [authorizedRoles];
                 }
@@ -48,15 +48,22 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                 return authorizedRoles.indexOf(Session.userRole) != -1;
             },
 
-            checkAuthenticated = function (authorizedRoles) {
-                $http.get('protected/authentication_check.gif', {
+             authService.permitAll = function(authorizedRoles) {
+                 if (!angular.isArray(authorizedRoles)) {
+                     authorizedRoles = [authorizedRoles];
+                 }
+
+                 return authorizedRoles.indexOf('*') != -1;
+             }
+            authService.checkAuthenticated = function (authorizedRoles) {
+                $http.get('protected/authentication_check.gif?d=' + new Date().getTime(), {
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
                     if (!Session.login) {
-                        $http.get('/principal')
+                        $http.get('login/principal')
                             .success((function(data) {
                                 Session.create(data.email, data.role, data.userId);
-                                if (!isAuthorized(authorizedRoles)) {
+                                if (!authService.isAuthorized(authorizedRoles)) {
                                     // user is not allowed
                                     $rootScope.$broadcast("event:auth-notAuthorized");
                                 } else {
@@ -66,7 +73,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
 
                         ;
                     }else{
-                        if (!isAuthorized(authorizedRoles)) {
+                        if (!authService.isAuthorized(authorizedRoles)) {
                             // user is not allowed
                             $rootScope.$broadcast("event:auth-notAuthorized");
                         } else {
@@ -74,7 +81,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                         }
                     }
                 }).error(function (data, status, headers, config) {
-                    if (!isAuthorized(authorizedRoles)) {
+                    if (!authService.isAuthorized(authorizedRoles)) {
                         $rootScope.$broadcast('event:auth-loginRequired', data);
                     }
                 });
@@ -102,7 +109,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
 
         })
         .config(function ($httpProvider) {
-            var interceptor = ['$rootScope', '$q', 'httpBuffer', function($rootScope, $q, httpBuffer) {
+            var interceptor = ['$rootScope', '$q', function($rootScope, $q) {
                 function success(response) {
                     return response;
                 }
@@ -110,7 +117,6 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                 function error(response) {
                     if (response.status === 401 && !response.config.ignoreAuthModule) {
                         var deferred = $q.defer();
-                        httpBuffer.append(response.config, deferred);
                         $rootScope.$broadcast('event:auth-loginRequired', response);
                         return deferred.promise;
                     } else if (response.status === 403 && !response.config.ignoreAuthModule) {
@@ -131,7 +137,9 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
             $rootScope.authenticated = false;
 
             $rootScope.$on('$routeChangeStart', function (event, next) {
-                AuthService.checkAuthenticated(next.data.authorizedRoles);
+                if (!AuthService.permitAll(next.data.authorizedRoles)) {
+                    AuthService.checkAuthenticated(next.data.authorizedRoles);
+                }
             });
 
 
