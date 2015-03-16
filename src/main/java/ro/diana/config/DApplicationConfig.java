@@ -1,0 +1,41 @@
+package ro.diana.config;
+
+import org.springframework.context.annotation.*;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+
+
+@Configuration
+@ComponentScan(basePackages = {"ro.diana"})
+@ImportResource( { "classpath*:spring-security.xml" } )
+@EnableWebMvc
+@Import({DDataSourceConfig.class})
+public class DApplicationConfig extends WebMvcConfigurerAdapter {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        return new CommonsMultipartResolver();
+    }
+
+    @Bean
+    public DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler() {
+        return new DefaultWebSecurityExpressionHandler();
+    }
+
+}
