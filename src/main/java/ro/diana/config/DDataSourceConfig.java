@@ -1,5 +1,6 @@
 package ro.diana.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -7,6 +8,7 @@ import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -48,6 +50,17 @@ public class DDataSourceConfig {
 
     @Autowired
     protected Environment environment;
+
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(getConfiguredDataSouce());
+        liquibase.setChangeLog("classpath*:config/liquibase/master.xml");
+        liquibase.setContexts("development,test,production");
+        LOG.debug("Configuring Liquibase");
+
+        return liquibase;
+    }
 
     @Bean
     public DataSource dataSource() {
@@ -101,6 +114,7 @@ public class DDataSourceConfig {
     }
 
     @Bean
+    @DependsOn("liquibase")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
