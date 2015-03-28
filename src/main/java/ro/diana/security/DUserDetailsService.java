@@ -35,6 +35,7 @@ public class DUserDetailsService implements UserDetailsService {
             authUser.setUserId(user.getId());
             authUser.setEmail(user.getEmail());
             authUser.addAuthority(user.getRole());
+            authUser.setRole(user.getRole());
 
             logger.debug("User login");
             return authUser;

@@ -43,25 +43,25 @@
     </appender>-->
 
     <!-- Application Loggers -->
-    <logger name="ro.tekin.disertatie">
+    <logger name="ro.diana">
         <level value="debug" />
     </logger>
 
     <!-- 3rdparty Loggers -->
     <logger name="org.springframework.core">
-        <level value="error" />
+        <level value="info" />
     </logger>
 
     <logger name="org.springframework.beans">
-        <level value="error" />
+        <level value="info" />
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="error" />
+        <level value="info" />
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="error" />
+        <level value="info" />
     </logger>
 
     <logger name="org.springframework.security">

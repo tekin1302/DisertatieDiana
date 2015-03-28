@@ -52,7 +52,7 @@ public class DPasswordEncoder implements PasswordEncoder {
 	}
 	
 	public static void main(String[] args) {
-		String password = "123456";
+		String password = "diana";
 		DPasswordEncoder pe = new DPasswordEncoder();
 		System.out.println(pe.encodePassword(password, null));
 	}

@@ -1,93 +1,4 @@
 var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularFileUpload'])
-        .constant('USER_ROLES', {
-            all: '*',
-            admin: 'admin',
-            dev: 'dev'
-        })
-        .constant('AUTH_EVENTS', {
-            loginSuccess: 'auth-login-success',
-            loginFailed: 'auth-login-failed',
-            logoutSuccess: 'auth-logout-success',
-            sessionTimeout: 'auth-session-timeout',
-            notAuthenticated: 'auth-not-authenticated',
-            notAuthorized: 'auth-not-authorized'
-        })
-        .service('Session', function () {
-            this.create = function (email, userRole, userId) {
-                this.email = email;
-                this.userRole = userRole;
-                this.userId = userId;
-    };
-            this.invalidate = function () {
-                this.email = null;
-                this.userRole = null;
-                this.userId = null;
-            };
-            return this;
-        })
-        .factory('AuthService', function ($rootScope, $http, Session) {
-            var authService = {};
-
-            authService.login = function (credentials) {
-                return $http
-                    .post('/login', credentials)
-                    .then(function (user) {
-                        Session.create(user.id,
-                            user.role);
-                        return user;
-                    });
-            };
-            authService.isAuthorized = function (authorizedRoles) {
-                if (!angular.isArray(authorizedRoles)) {
-                    authorizedRoles = [authorizedRoles];
-                }
-
-                if (authorizedRoles.indexOf('*') != -1) {
-                    return true;
-                }
-                return authorizedRoles.indexOf(Session.userRole) != -1;
-            },
-
-             authService.permitAll = function(authorizedRoles) {
-                 if (!angular.isArray(authorizedRoles)) {
-                     authorizedRoles = [authorizedRoles];
-                 }
-
-                 return authorizedRoles.indexOf('*') != -1;
-             }
-            authService.checkAuthenticated = function (authorizedRoles) {
-                $http.get('protected/authentication_check.gif?d=' + new Date().getTime(), {
-                    ignoreAuthModule: 'ignoreAuthModule'
-                }).success(function (data, status, headers, config) {
-                    if (!Session.login) {
-                        $http.get('login/principal')
-                            .success((function(data) {
-                                Session.create(data.email, data.role, data.userId);
-                                if (!authService.isAuthorized(authorizedRoles)) {
-                                    // user is not allowed
-                                    $rootScope.$broadcast("event:auth-notAuthorized");
-                                } else {
-                                    $rootScope.$broadcast("event:auth-loginConfirmed");
-                                }
-                            }))
-
-                        ;
-                    }else{
-                        if (!authService.isAuthorized(authorizedRoles)) {
-                            // user is not allowed
-                            $rootScope.$broadcast("event:auth-notAuthorized");
-                        } else {
-                            $rootScope.$broadcast("event:auth-loginConfirmed");
-                        }
-                    }
-                }).error(function (data, status, headers, config) {
-                    if (!authService.isAuthorized(authorizedRoles)) {
-                        $rootScope.$broadcast('event:auth-loginRequired', data);
-                    }
-                });
-            }
-            return authService;
-        })
         .config(function ($routeProvider, USER_ROLES) {
         $routeProvider.when("/login",
             {
@@ -103,18 +14,28 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                 templateUrl: 'resources/views/test.html',
                 controller: 'testController',
                 data: {
-                    authorizedRoles: [USER_ROLES.admin]
+                    authorizedRoles: [USER_ROLES.ROLE_USER]
+                }
+
+            })
+            .when("/error",{
+                templateUrl:'resources/views/error.html',
+                data:{
+                    authorizedRoles:[USER_ROLES.all]
                 }
             });
 
         })
-        .config(function ($httpProvider) {
+        .config(["$httpProvider",function($httpProvider) {
+            $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
             var interceptor = ['$rootScope', '$q', function($rootScope, $q) {
                 function success(response) {
                     return response;
                 }
 
                 function error(response) {
+                    console.log("response: "+ response.status);
                     if (response.status === 401 && !response.config.ignoreAuthModule) {
                         var deferred = $q.defer();
                         $rootScope.$broadcast('event:auth-loginRequired', response);
@@ -132,7 +53,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
 
             }];
             $httpProvider.responseInterceptors.push(interceptor);
-        })
+        }])
         .run(function ($rootScope, $location, AuthService, Session, USER_ROLES) {
             $rootScope.authenticated = false;
 

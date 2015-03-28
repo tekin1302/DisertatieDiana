@@ -2,18 +2,39 @@
 <html>
 <head>
     <title>My first page</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script type="text/javascript" src="resources/js/angular/angular.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-resource.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-route.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-file-upload.min.js"></script>
     <script type="text/javascript" src="resources/js/services/app.js"></script>
+    <script type="text/javascript" src="resources/js/services/constant.js"></script>
+    <script type="text/javascript" src="resources/js/services/services.js"></script>
     <script type="text/javascript" src="resources/js/controllers/loginController.js"></script>
     <script type="text/javascript" src="resources/js/controllers/testController.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </head>
 <body ng-app="myAppModule">
-        Content
-        <a href="#/test" >Test</a>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1>Online compiler</h1>
         <a href="#/login" >Login</a>
-<ng-view></ng-view>
+        <a href="logout" >Logout</a>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#/test" >Test</a></li>
+        <li><a href="#">Menu 1</a></li>
+        <li><a href="#">Menu 2</a></li>
+        <li><a href="#">Menu 3</a></li>
+    </ul>
+
+    <ng-view></ng-view>
+</div>
+
+
+
+
 </body>
 </html>

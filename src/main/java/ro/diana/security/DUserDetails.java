@@ -1,5 +1,6 @@
 package ro.diana.security;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,10 @@ public class DUserDetails implements UserDetails {
         return role;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public void setAuthorities(Collection<GrantedAuthority> authorities) {
         this.authorities = authorities;
 
@@ -54,6 +59,7 @@ public class DUserDetails implements UserDetails {
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetails#getAuthorities()
      */
+    @JsonIgnore
     public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
     }
@@ -61,6 +67,7 @@ public class DUserDetails implements UserDetails {
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetails#getPassword()
      */
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -75,6 +82,7 @@ public class DUserDetails implements UserDetails {
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonExpired()
      */
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         // TODO Auto-generated method stub
         return true;
@@ -83,6 +91,7 @@ public class DUserDetails implements UserDetails {
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonLocked()
      */
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         // TODO Auto-generated method stub
         return true;
@@ -91,6 +100,7 @@ public class DUserDetails implements UserDetails {
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetails#isCredentialsNonExpired()
      */
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
         return true;

@@ -8,7 +8,9 @@
 
     <!-- HTTP security configurations -->
     <http auto-config="true" access-denied-page="/login/denied">
-        <form-login login-processing-url="/login/authenticate" login-page="/login/needAuth" authentication-failure-url="/login/needAuth" />
+        <form-login login-processing-url="/authenticate" login-page="/login/needAuth"
+                    username-parameter="d_username" password-parameter="d_password"
+                    authentication-failure-url="/login/needAuth"  />
         <logout logout-url="/logout" />
 
         <intercept-url pattern="/protected/**" access="IS_AUTHENTICATED_FULLY" />

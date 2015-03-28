@@ -1,5 +1,11 @@
-<form action="/loginP">
-    Name:<input type="text" name="j_username"/>
-    Password:<input type="password" name="j_password"/>
+<!--<form action="authenticate" method="post">
+    Name:<input type="text" name="dUsername"/>
+    Password:<input type="password" name="dPassword"/>
     <button type="submit" >Ok</button>
+</form>-->
+
+<form >
+    Name:<input type="text" ng-model="credentials.d_username"/>
+    Password:<input type="password" ng-model="credentials.d_password"/>
+    <button ng-click="authenticate(credentials)" >Ok</button>
 </form>
