@@ -3,6 +3,10 @@
 <head>
     <title>My first page</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/login.css">
+    <link rel="stylesheet" href="resources/css/jumbotron-narrow.css">
+    <link rel="stylesheet" href="resources/js/jsTree/dist/themes/default/style.min.css" />
+
     <script type="text/javascript" src="resources/js/angular/angular.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-resource.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-route.min.js"></script>
@@ -14,27 +18,70 @@
     <script type="text/javascript" src="resources/js/controllers/testController.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="resources/js/jsTree/dist/libs/jquery.js"></script>
+    <!-- 5 include the minified jstree source -->
+    <script src="resources/js/jsTree/dist/jstree.min.js"></script>
 </head>
 <body ng-app="myAppModule">
 
 <div class="container">
-    <div class="jumbotron">
-        <h1>Online compiler</h1>
-        <a href="#/login" >Login</a>
-        <a href="logout" >Logout</a>
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a href="#/test">test</a></li>
+                <li role="presentation"><a href="#">About</a></li>
+                <li role="presentation"><a href="#">Contact</a></li>
+                <li role="presentation"><a href="#/login">Login</a></li>
+                <li role="presentation"><a href="logout">Logout</a></li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">Compileaza online</h3>
     </div>
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#/test" >Test</a></li>
-        <li><a href="#">Menu 1</a></li>
-        <li><a href="#">Menu 2</a></li>
-        <li><a href="#">Menu 3</a></li>
-    </ul>
-
-    <ng-view></ng-view>
 </div>
 
 
+<section id="with-container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4">
+                <div id="jstree">
+                    <!-- in this example the tree is populated from inline HTML -->
+                    <ul>
+                        <li>Root node 1
+                            <ul>
+                                <li id="child_node_1">Child node 1</li>
+                                <li>Child node 2</li>
+                            </ul>
+                        </li>
+                        <li>Root node 2</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <ng-view></ng-view>
+            </div>
+            <div class="col-xs-4">
+            </div>
+        </div>
+    </div>
+</section>
 
-
+<script>
+    $(function () {
+        // 6 create an instance when the DOM is ready
+        $('#jstree').jstree();
+        // 7 bind to events triggered on the tree
+        $('#jstree').on("changed.jstree", function (e, data) {
+            location.href = '#/test';
+        });
+        // 8 interact with the tree - either way is OK
+        /*$('button').on('click', function () {
+            $('#jstree').jstree(true).select_node('child_node_1');
+            $('#jstree').jstree('select_node', 'child_node_1');
+            $.jstree.reference('#jstree').select_node('child_node_1');
+        });*/
+    });
+</script>
 </body>
 </html>

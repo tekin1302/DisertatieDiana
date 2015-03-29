@@ -4,8 +4,55 @@
     <button type="submit" >Ok</button>
 </form>-->
 
+<!--
 <form >
-    Name:<input type="text" ng-model="credentials.d_username"/>
+    Email:<input type="email" ng-model="credentials.d_username"/>
     Password:<input type="password" ng-model="credentials.d_password"/>
     <button ng-click="authenticate(credentials)" >Ok</button>
-</form>
+</form>-->
+<div class="container" style="margin-top:40px">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form>
+                        <fieldset>
+                            <div class="row">
+                                <div class="center-block">
+                                    <img class="profile-img"
+                                         src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                    <div class="form-group">
+                                        <div class="input-group">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-user"></i>
+												</span>
+                                            <input class="form-control" placeholder="Username" ng-model="credentials.d_username" type="text" autofocus>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-lock"></i>
+												</span>
+                                            <input class="form-control" placeholder="Password" ng-model="credentials.d_password" type="password" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block" ng-click="authenticate(credentials)">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="panel-footer ">
+                    Don't have an account! <a href="#" onClick=""> Sign Up Here </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
