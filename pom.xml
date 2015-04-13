@@ -10,9 +10,30 @@
     <properties>
         <spring.version>4.0.0.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
+        <postgresql.version>9.4-1201-jdbc41</postgresql.version>
+        <liquibase-slf4j.version>1.2.1</liquibase-slf4j.version>
+        <liquibase.version>3.3.2</liquibase.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.mattbertolini</groupId>
+            <artifactId>liquibase-slf4j</artifactId>
+            <version>${liquibase-slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jetty-servlet</artifactId>
+                    <groupId>org.eclipse.jetty</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>org.bitbucket.mstrobel</groupId>
             <artifactId>procyon-decompiler</artifactId>
