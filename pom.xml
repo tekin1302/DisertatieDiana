@@ -14,10 +14,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.bitbucket.mstrobel</groupId>
+            <artifactId>procyon-decompiler</artifactId>
+            <version>0.5.28</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.8</version>
         </dependency>
+
 
         <dependency>
             <groupId>net.tanesha.recaptcha4j</groupId>
@@ -210,8 +216,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>

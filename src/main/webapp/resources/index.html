@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="resources/css/login.css">
     <link rel="stylesheet" href="resources/css/jumbotron-narrow.css">
     <link rel="stylesheet" href="resources/js/jsTree/dist/themes/default/style.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
     <script type="text/javascript" src="resources/js/angular/angular.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-resource.min.js"></script>
@@ -15,9 +17,13 @@
     <script type="text/javascript" src="resources/js/services/constant.js"></script>
     <script type="text/javascript" src="resources/js/services/services.js"></script>
     <script type="text/javascript" src="resources/js/controllers/loginController.js"></script>
-    <script type="text/javascript" src="resources/js/controllers/testController.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="resources/js/controllers/homeController.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+    <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 
     <script src="resources/js/jsTree/dist/libs/jquery.js"></script>
     <!-- 5 include the minified jstree source -->
@@ -29,7 +35,7 @@
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active"><a href="#/test">test</a></li>
+                <li role="presentation" class="active"><a href="#/home">Home</a></li>
                 <li role="presentation"><a href="#">About</a></li>
                 <li role="presentation"><a href="#">Contact</a></li>
                 <li role="presentation"><a href="#/login">Login</a></li>
@@ -40,48 +46,13 @@
     </div>
 </div>
 
+<ng-view></ng-view>
 
-<section id="with-container-fluid">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4">
-                <div id="jstree">
-                    <!-- in this example the tree is populated from inline HTML -->
-                    <ul>
-                        <li>Root node 1
-                            <ul>
-                                <li id="child_node_1">Child node 1</li>
-                                <li>Child node 2</li>
-                            </ul>
-                        </li>
-                        <li>Root node 2</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <ng-view></ng-view>
-            </div>
-            <div class="col-xs-4">
-            </div>
-        </div>
-    </div>
-</section>
+<div id="simcp-cloak" style="display: none;"/>
 
-<script>
-    $(function () {
-        // 6 create an instance when the DOM is ready
-        $('#jstree').jstree();
-        // 7 bind to events triggered on the tree
-        $('#jstree').on("changed.jstree", function (e, data) {
-            location.href = '#/test';
-        });
-        // 8 interact with the tree - either way is OK
-        /*$('button').on('click', function () {
-            $('#jstree').jstree(true).select_node('child_node_1');
-            $('#jstree').jstree('select_node', 'child_node_1');
-            $.jstree.reference('#jstree').select_node('child_node_1');
-        });*/
-    });
-</script>
+<style>
+    #simcp-cloak {height: 100%;margin: 0 !important;padding: 0 !important;position: absolute;width: 100%;z-index: 99;background-color: #000000;opacity: 0;top: 0;text-align: center;cursor: wait;}
+</style>
 </body>
+
 </html>

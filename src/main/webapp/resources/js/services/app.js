@@ -9,10 +9,10 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                 }
 
             })
-            .when("/test",
+            .when("/home",
             {
-                templateUrl: 'resources/views/test.html',
-                controller: 'testController',
+                templateUrl: 'resources/views/home.html',
+                controller: 'homeController',
                 data: {
                     authorizedRoles: [USER_ROLES.ROLE_USER]
                 }
