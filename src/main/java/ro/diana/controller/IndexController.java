@@ -3,16 +3,15 @@ package ro.diana.controller;
 import com.strobel.decompiler.Decompiler;
 import com.strobel.decompiler.DecompilerSettings;
 import com.strobel.decompiler.PlainTextOutput;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ro.common.JSTreeNode;
 import ro.diana.config.DProperties;
-import ro.diana.model.JSTreeNode;
+import ro.diana.service.HttpService;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.tools.JavaCompiler;
@@ -24,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -34,6 +32,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class IndexController {
+
+    @Autowired
+    private HttpService httpService;
 
     @RequestMapping("/")
     public String redirect(HttpServletRequest request) {
@@ -123,8 +124,12 @@ public class IndexController {
 
     @RequestMapping("/getWebApps")
     @ResponseBody
-    public List<JSTreeNode> getNodes(@RequestParam String root){
-        List<JSTreeNode> jsTree = getFiles(root);
+    public List<JSTreeNode> getNodes(@RequestParam String root) throws Exception {
+        byte[] bytes = httpService.doRequest("http://localhost:8080/read/?list=" + root);
+        List<JSTreeNode> jsTree = null;
+        try(ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes))){
+             jsTree = (List<JSTreeNode>) objectInputStream.readObject();
+        }
         return jsTree;
     }
 
