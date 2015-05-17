@@ -7,5 +7,7 @@ import java.io.OutputStream;
  * Created by diana on 14.04.2015.
  */
 public interface HttpService {
-    byte[] doRequest(String url) throws IOException, Exception;
+    byte[] doGetRequest(String url) throws IOException, Exception;
+
+    byte[] doPostRequest(String url, byte[] payLoad) throws Exception;
 }

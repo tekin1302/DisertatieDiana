@@ -1,8 +1,5 @@
 package ro.diana.controller;
 
-import com.strobel.decompiler.Decompiler;
-import com.strobel.decompiler.DecompilerSettings;
-import com.strobel.decompiler.PlainTextOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +41,11 @@ public class IndexController {
     @RequestMapping("/compileFile")
     @ResponseBody
     public String compileFile(@RequestParam String urlpath,  @RequestParam String content, HttpServletResponse response) throws IOException {
+        try {
+            httpService.doGetRequest("http://localhost:8080/read/?get=" + urlpath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (urlpath.endsWith(".class")){
             return compileClassFile(urlpath, content, response);
         } else {
@@ -91,41 +93,22 @@ public class IndexController {
     }
 
     @RequestMapping("/getContent")
-    public void decompile(@RequestParam String urlpath, HttpServletResponse response) throws IOException {
-       if (urlpath.endsWith(".class")){
-           getClassContent(urlpath, response);
-       } else {
-           getTextContent(urlpath, response);
-       }
-    }
-
-    private HttpServletResponse getTextContent(String urlpath, HttpServletResponse response) throws IOException {
-        DProperties rootPath = DProperties.getInstance();
-        String path = rootPath.getRoot() + urlpath.replace("/","\\");
-        FileInputStream fis = new FileInputStream(path);
-        int c;
-        while((c = fis.read()) != -1){
-            response.getOutputStream().write(c);
+    public void decompile(@RequestParam String urlpath, HttpServletResponse response) throws Exception {
+        byte[] bytes = httpService.doGetRequest("http://localhost:8080/read/?get=" + urlpath);
+        if (urlpath.endsWith(".class") || urlpath.endsWith(".xml") || urlpath.endsWith(".jsp") || urlpath.endsWith(".html")
+                    || urlpath.endsWith(".js") || urlpath.endsWith(".css") || urlpath.endsWith(".MF") ) {
+            response.getWriter().write(new String(bytes));
+        } else {
+            response.setContentType("application/octet-stream");
+            response.setContentLength(bytes.length);
+            response.setHeader("Content-Disposition","attachment; filename=\"" + urlpath +"\"");
         }
-        return response;
-    }
-
-    private HttpServletResponse getClassContent(String urlPath, HttpServletResponse response)throws IOException{
-        final DecompilerSettings settings = DecompilerSettings.javaDefaults();
-        DProperties rootPath = DProperties.getInstance();
-        String path = rootPath.getRoot() + urlPath.replace("/","\\");
-        Decompiler.decompile(
-                path,
-                new PlainTextOutput(response.getWriter()),
-                settings
-        );
-        return response;
     }
 
     @RequestMapping("/getWebApps")
     @ResponseBody
     public List<JSTreeNode> getNodes(@RequestParam String root) throws Exception {
-        byte[] bytes = httpService.doRequest("http://localhost:8080/read/?list=" + root);
+        byte[] bytes = httpService.doGetRequest("http://localhost:8080/read/?list=" + root);
         List<JSTreeNode> jsTree = null;
         try(ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes))){
              jsTree = (List<JSTreeNode>) objectInputStream.readObject();
