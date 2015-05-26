@@ -6,7 +6,7 @@
 
     <changeSet id="20150329182213#1" author="tekin">
         <createTable tableName="T_USER">
-            <column name="id" type="bigint">
+            <column name="id" type="integer">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="email" type="varchar(254)" />

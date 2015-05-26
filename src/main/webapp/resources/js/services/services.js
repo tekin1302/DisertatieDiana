@@ -31,8 +31,12 @@ myModule
                 $http.get('login/principal').success(function (user) {
                     Session.create(user.username, user.role,
                         user.userId);
-                    alert($location.search().redirect);
-                   $location.path($location.search().redirect);
+                   var redirect = $location.search().redirect;
+                    if (redirect) {
+                        $location.path($location.search().redirect);
+                    } else {
+                        $location.path("/");
+                    }
                 });
             });
             /*
@@ -62,6 +66,15 @@ myModule
 
                 return authorizedRoles.indexOf('*') != -1;
             }
+
+        authService.logout = function() {
+            $http.get("logout").success(function(){
+                $rootScope.$broadcast('event:auth-logoutSuccess');
+                Session.invalidate();
+                $location.path("/login");
+            });
+        }
+
         authService.checkAuthenticated = function (authorizedRoles) {
             $http.get('protected/authentication_check.gif?d=' + new Date().getTime(), {
                 ignoreAuthModule: 'ignoreAuthModule'

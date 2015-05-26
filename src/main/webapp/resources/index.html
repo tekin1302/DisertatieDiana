@@ -18,6 +18,8 @@
     <script type="text/javascript" src="resources/js/services/services.js"></script>
     <script type="text/javascript" src="resources/js/controllers/loginController.js"></script>
     <script type="text/javascript" src="resources/js/controllers/homeController.js"></script>
+    <script type="text/javascript" src="resources/mainController.js"></script>
+    <script type="text/javascript" src="resources/js/controllers/historyController.js"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
     <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
 
@@ -29,17 +31,22 @@
     <!-- 5 include the minified jstree source -->
     <script src="resources/js/jsTree/dist/jstree.min.js"></script>
 </head>
-<body ng-app="myAppModule">
+<body ng-app="myAppModule" ng-controller="mainController">
 
 <div class="container">
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills pull-right">
                 <li role="presentation" class="active"><a href="#/home">Home</a></li>
-                <li role="presentation"><a href="#">About</a></li>
+                <li role="presentation"><a href="#">Despre</a></li>
                 <li role="presentation"><a href="#">Contact</a></li>
-                <li role="presentation"><a href="#/login">Login</a></li>
-                <li role="presentation"><a href="logout">Logout</a></li>
+                <li role="presentation" ng-show="!isAuthenticated()"><a href="#/login">Login</a></li>
+                <li role="presentation" ng-show="isAuthenticated()" ng-click="logout()"><a>Logout</a></li>
+                <li role="presentation" ng-show="isAuthenticated()" style="text-align: center">
+                    <span class="profile-icon"></span>
+                    <br/>
+                    {{user.email}}
+                </li>
             </ul>
         </nav>
         <h3 class="text-muted">Compileaza online</h3>

@@ -1,0 +1,41 @@
+<table style="width: 100%">
+    <tr>
+        <td></td>
+        <td>
+            <div class="row">
+                <div class="col-xs-6">
+                    Versiune din data de 13-02-2015 18:15:15
+                    <button class="btn btn-primary">Aplica versiunea</button>
+                </div>
+                <div class="col-xs-6">
+                    Versiune curenta
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td width="230px" class="history-items">
+            <div>
+                <ul>
+                    <li ng-repeat="item in historyItems">
+                        {{item.date}} - {{item.author}}
+                    </li>
+                </ul>
+            </div>
+        </td>
+        <td>
+            <div class="row">
+                <div class="col-xs-6">
+                    <textarea class="history">
+
+                    </textarea>
+                </div>
+                <div class="col-xs-6">
+                    <textarea class="history">
+
+                    </textarea>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

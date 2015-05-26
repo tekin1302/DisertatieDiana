@@ -23,6 +23,18 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                 data:{
                     authorizedRoles:[USER_ROLES.all]
                 }
+            }).when("/history",{
+                templateUrl: 'resources/views/history.html',
+                controller: 'historyController',
+                data: {
+                    authorizedRoles: [USER_ROLES.ROLE_USER]
+                }
+            }).when("/",{
+                templateUrl: 'resources/views/home.html',
+                controller: 'homeController',
+                data: {
+                    authorizedRoles: [USER_ROLES.ROLE_USER]
+                }
             });
 
         })
