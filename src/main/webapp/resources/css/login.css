@@ -60,3 +60,14 @@ td {
     overflow: auto;
     border: 1px solid;
 }
+.history-item-selected {
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #4169e1 !important;
+}
+.nav-tabs {
+    border-bottom: none;
+}
+#logs li.active>a {
+    background-color: #f5f5f5 !important;
+}

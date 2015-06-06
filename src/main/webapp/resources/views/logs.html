@@ -1,0 +1,5 @@
+<tabset id="logs">
+    <tab ng-repeat="log in logs" heading="{{log.name}}" select="getLogContent(log)">
+        <pre>{{log.logContent}}</pre>
+    </tab>
+</tabset>

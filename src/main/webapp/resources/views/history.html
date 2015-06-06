@@ -1,11 +1,11 @@
 <table style="width: 100%">
-    <tr>
+    <tr style="line-height: 4; font-weight: bold">
         <td></td>
         <td>
-            <div class="row">
+            <div class="row" >
                 <div class="col-xs-6">
                     Versiune din data de 13-02-2015 18:15:15
-                    <button class="btn btn-primary">Aplica versiunea</button>
+                    <button class="btn btn-primary" ng-click="applyVersion()">Aplica versiunea</button>
                 </div>
                 <div class="col-xs-6">
                     Versiune curenta
@@ -17,7 +17,7 @@
         <td width="230px" class="history-items">
             <div>
                 <ul>
-                    <li ng-repeat="item in historyItems">
+                    <li ng-repeat="item in historyItems" ng-class="getHistoryItemClass(item)" ng-click="selectHistoryItem(item)">
                         {{item.date}} - {{item.author}}
                     </li>
                 </ul>
@@ -26,12 +26,12 @@
         <td>
             <div class="row">
                 <div class="col-xs-6">
-                    <textarea class="history">
+                    <textarea class="history" ng-model="historyVersion">
 
                     </textarea>
                 </div>
                 <div class="col-xs-6">
-                    <textarea class="history">
+                    <textarea class="history" ng-model="currentVersion">
 
                     </textarea>
                 </div>

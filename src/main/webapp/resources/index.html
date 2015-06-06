@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My first page</title>
+    <title>SGA</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/login.css">
     <link rel="stylesheet" href="resources/css/jumbotron-narrow.css">
     <link rel="stylesheet" href="resources/js/jsTree/dist/themes/default/style.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="resources/css/login.css">
 
     <script type="text/javascript" src="resources/js/angular/angular.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-resource.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-route.min.js"></script>
     <script type="text/javascript" src="resources/js/angular/angular-file-upload.min.js"></script>
+    <script src="resources/js/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
     <script type="text/javascript" src="resources/js/services/app.js"></script>
     <script type="text/javascript" src="resources/js/services/constant.js"></script>
     <script type="text/javascript" src="resources/js/services/services.js"></script>
+    <script type="text/javascript" src="resources/js/services/alertService.js"></script>
     <script type="text/javascript" src="resources/js/controllers/loginController.js"></script>
     <script type="text/javascript" src="resources/js/controllers/homeController.js"></script>
-    <script type="text/javascript" src="resources/mainController.js"></script>
     <script type="text/javascript" src="resources/js/controllers/historyController.js"></script>
+    <script type="text/javascript" src="resources/js/controllers/logsController.js"></script>
+    <script type="text/javascript" src="resources/mainController.js"></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
     <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
 
@@ -37,9 +41,8 @@
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active"><a href="#/home">Home</a></li>
-                <li role="presentation"><a href="#">Despre</a></li>
-                <li role="presentation"><a href="#">Contact</a></li>
+                <li role="presentation" ng-show="isAuthenticated()" class="active"><a href="#/home">Home</a></li>
+                <li role="presentation" ng-show="isAuthenticated()"><a href="#/logs">Loguri</a></li>
                 <li role="presentation" ng-show="!isAuthenticated()"><a href="#/login">Login</a></li>
                 <li role="presentation" ng-show="isAuthenticated()" ng-click="logout()"><a>Logout</a></li>
                 <li role="presentation" ng-show="isAuthenticated()" style="text-align: center">
@@ -49,7 +52,7 @@
                 </li>
             </ul>
         </nav>
-        <h3 class="text-muted">Compileaza online</h3>
+        <h3 class="text-muted">Sistem pentru gestiunea aplicatiilor</h3>
     </div>
 </div>
 

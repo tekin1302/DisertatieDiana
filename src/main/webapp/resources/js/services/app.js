@@ -1,4 +1,4 @@
-var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularFileUpload'])
+var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularFileUpload', 'ui.bootstrap'])
         .config(function ($routeProvider, USER_ROLES) {
         $routeProvider.when("/login",
             {
@@ -26,6 +26,12 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
             }).when("/history",{
                 templateUrl: 'resources/views/history.html',
                 controller: 'historyController',
+                data: {
+                    authorizedRoles: [USER_ROLES.ROLE_USER]
+                }
+            }).when("/logs",{
+                templateUrl: 'resources/views/logs.html',
+                controller: 'logsController',
                 data: {
                     authorizedRoles: [USER_ROLES.ROLE_USER]
                 }
@@ -67,7 +73,6 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
             $httpProvider.responseInterceptors.push(interceptor);
         }])
         .run(function ($rootScope, $location, AuthService, Session, USER_ROLES) {
-            $rootScope.authenticated = false;
 
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if (!AuthService.permitAll(next.data.authorizedRoles)) {
@@ -78,7 +83,6 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
 
             // Call when the the client is confirmed
             $rootScope.$on('event:auth-loginConfirmed', function (data) {
-                $rootScope.authenticated = true;
                 if ($location.path() === "/login") {
                     var search = $location.search();
                     if (search.redirect !== undefined) {
@@ -92,9 +96,7 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
             // Call when the 401 response is returned by the server
             $rootScope.$on('event:auth-loginRequired', function (rejection) {
                 Session.invalidate();
-                $rootScope.authenticated = false;
-                if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register" &&
-                    $location.path() !== "/activate" && $location.path() !== "/login") {
+                if ($location.path() !== "/login" && $location.path() !== "/register") {
                     var redirect = $location.path();
                     $location.path('/login').search('redirect', redirect).replace();
                 }
