@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ro.common.AppFile;
 import ro.common.JSTreeNode;
 import ro.diana.config.DProperties;
 import ro.diana.service.HttpService;
@@ -40,61 +41,22 @@ public class IndexController {
 
     @RequestMapping("/compileFile")
     @ResponseBody
-    public String compileFile(@RequestParam String urlpath,  @RequestParam String content, HttpServletResponse response) throws IOException {
+    public void compileFile(@RequestParam String urlpath,  @RequestParam String content, HttpServletResponse response) throws IOException {
         try {
-            httpService.doGetRequest("http://localhost:8080/read/?get=" + urlpath);
+            AppFile appFile = new AppFile(urlpath, content.getBytes());
+            httpService.doPostRequest("http://localhost:8080/reader/" , appFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (urlpath.endsWith(".class")){
-            return compileClassFile(urlpath, content, response);
-        } else {
-            return compileOtherFile(urlpath, response);
-        }
+
     }
 
-    private String compileOtherFile(String urlpath, HttpServletResponse response) {
-        return null;
-    }
 
-    private String compileClassFile(String urlpath, final String content, HttpServletResponse response) throws IOException {
-        DProperties rootPath = DProperties.getInstance();
-        String path = rootPath.getRoot() + urlpath.replace("/","\\");
-        String javaFilePath = createJavaFile(path, content);
-        final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        List<String> optionList = new ArrayList<String>();
-        String classPath = buildClassPath(rootPath.getRoot().replace("/","\\") + "\\disertatie\\WEB-INF\\lib\\*" , rootPath.getRoot().replace("/","\\") + "\\disertatie\\WEB-INF\\classes\\");
-        optionList.add("-classpath");
-        optionList.add(classPath);
-        StandardJavaFileManager standardJavaFileManager = compiler.getStandardFileManager(null, null, null);
-        File[] files = new File[]{new File(javaFilePath)};
 
-        StringWriter sw = new StringWriter();
-        JavaCompiler.CompilationTask task = compiler.getTask(sw, standardJavaFileManager, null, optionList, null, standardJavaFileManager.getJavaFileObjects(files));
-
-        task.call();
-        sw.close();
-        //sterg .java file
-        File deleteFile = new File(javaFilePath);
-        if (deleteFile.delete()){
-            System.out.println("Fisierul a fost sters");
-        } else {
-            System.out.println("Eroare la stergere");
-        }
-        return sw.toString();
-    }
-
-    private String createJavaFile(String path, String content) throws IOException {
-        String javaPath = path.substring(0,path.lastIndexOf(".")) + ".java";
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(javaPath))){
-            bw.write(content);
-        }
-        return javaPath;
-    }
 
     @RequestMapping("/getContent")
     public void decompile(@RequestParam String urlpath, HttpServletResponse response) throws Exception {
-        byte[] bytes = httpService.doGetRequest("http://localhost:8080/read/?get=" + urlpath);
+        byte[] bytes = httpService.doGetRequest("http://localhost:8080/reader/?get=" + urlpath);
         if (urlpath.endsWith(".class") || urlpath.endsWith(".xml") || urlpath.endsWith(".jsp") || urlpath.endsWith(".html")
                     || urlpath.endsWith(".js") || urlpath.endsWith(".css") || urlpath.endsWith(".MF") ) {
             response.getWriter().write(new String(bytes));
@@ -108,7 +70,7 @@ public class IndexController {
     @RequestMapping("/getWebApps")
     @ResponseBody
     public List<JSTreeNode> getNodes(@RequestParam String root) throws Exception {
-        byte[] bytes = httpService.doGetRequest("http://localhost:8080/read/?list=" + root);
+        byte[] bytes = httpService.doGetRequest("http://localhost:8080/reader/?list=" + root);
         List<JSTreeNode> jsTree = null;
         try(ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes))){
              jsTree = (List<JSTreeNode>) objectInputStream.readObject();
@@ -165,26 +127,6 @@ public class IndexController {
     }
 
 
-    private static String buildClassPath(String... paths) {
-        StringBuilder sb = new StringBuilder();
-        for (String path : paths) {
-            if (path.endsWith("*")) {
-                path = path.substring(0, path.length() - 1);
-                File pathFile = new File(path);
-                for (File file : pathFile.listFiles()) {
-                    if (file.isFile() && file.getName().endsWith(".jar")) {
-                        sb.append(path);
-                        sb.append(file.getName());
-                        sb.append(System.getProperty("path.separator"));
-                    }
-                }
-            } else {
-                sb.append(path);
-                sb.append(System.getProperty("path.separator"));
-            }
-        }
-        return sb.toString();
-    }
 
 
 }
