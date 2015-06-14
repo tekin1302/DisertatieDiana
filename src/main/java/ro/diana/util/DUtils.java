@@ -1,8 +1,6 @@
 package ro.diana.util;
 
-/**
- * Created by tekin.omer on 6/7/2015.
- */
+
 public class DUtils {
     public static String getExtension(String name) {
         return name.substring(name.lastIndexOf('.') + 1, name.length());

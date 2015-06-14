@@ -1,8 +1,5 @@
 package ro.diana.model;
 
-/**
- * Created by tekin.omer on 6/7/2015.
- */
 public class CompileModel {
     private String path;
     private String content;

@@ -1,10 +1,14 @@
-myModule.controller("historyController", function ($scope, $http, $modal, AlertService, files) {
+myModule.controller("historyController", function ($scope, $http, $modal, AlertService, files, CompileSvc) {
     $scope.historyItems = files;
 
     $scope.currentVersion = files[0];
 
     $scope.applyVersion = function() {
-        AlertService.showSuccess('sm', 'Versiunea a fost aplicata cu succes!', $scope, null);
+        CompileSvc.compile({path: $scope.historyVersion.path, content: $scope.historyVersion.stringContent}, function(data) {
+            AlertService.showSuccess('sm', 'Versiunea a fost aplicata cu succes!', $scope, null);
+            $scope.currentVersion = $scope.historyVersion;
+        });
+
     }
 
     $scope.getHistoryItemClass = function(item) {

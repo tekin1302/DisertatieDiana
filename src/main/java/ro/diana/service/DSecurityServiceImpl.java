@@ -7,9 +7,7 @@ import ro.diana.entity.User;
 import ro.diana.repository.UserRepository;
 import ro.diana.security.DUserDetails;
 
-/**
- * Created by tekin.omer on 6/7/2015.
- */
+
 @Service
 public class DSecurityServiceImpl implements DSecurityService {
 

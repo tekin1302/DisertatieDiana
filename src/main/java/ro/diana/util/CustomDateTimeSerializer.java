@@ -10,9 +10,6 @@ import org.joda.time.format.DateTimeFormatter;
 import java.io.IOException;
 
 /**
- * Created by tekin.omer on 6/7/2015.
- */
-/**
  * Custom Jackson serializer for displaying Joda DateTime objects.
  */
 public class CustomDateTimeSerializer extends JsonSerializer<DateTime> {
