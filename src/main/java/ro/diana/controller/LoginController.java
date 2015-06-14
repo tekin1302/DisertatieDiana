@@ -13,7 +13,7 @@ import ro.diana.model.Credentials;
 import ro.diana.security.DUserDetails;
 
 /**
- * Created by tekin.omer on 3/16/2015.
+ * Created by diana. on 3/16/2015.
  */
 @RestController
 @RequestMapping("/login")
@@ -33,5 +33,9 @@ public class LoginController {
     @RequestMapping(value="/needAuth")
     public ResponseEntity needAuth() {
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    }
+    @RequestMapping(value="/failure")
+    public ResponseEntity failure() {
+        return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 }

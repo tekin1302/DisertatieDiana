@@ -38,6 +38,10 @@ myModule
                         $location.path("/");
                     }
                 });
+            }).error(function(data, status, headers, config){
+                if (status == 406) {
+                    $rootScope.$broadcast('event:auth-loginFailed');
+                }
             });
             /*
              return $http

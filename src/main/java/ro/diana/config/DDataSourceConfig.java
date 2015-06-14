@@ -102,7 +102,7 @@ public class DDataSourceConfig {
     }
 
     @Bean
-    public JpaTransactionManager jpaTransactionManager() {
+    public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;

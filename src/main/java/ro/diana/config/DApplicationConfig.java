@@ -1,6 +1,8 @@
 package ro.diana.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -21,7 +23,14 @@ import javax.validation.ValidatorFactory;
 @ImportResource( { "classpath*:spring-security.xml" } )
 @EnableWebMvc
 @Import({DDataSourceConfig.class})
+@PropertySource("classpath:app.properties")
 public class DApplicationConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private void initProperties(Environment environment) {
+        DProperties instance = DProperties.getInstance();
+        instance.setClientRootUrl(environment.getRequiredProperty("clientRootUrl"));
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

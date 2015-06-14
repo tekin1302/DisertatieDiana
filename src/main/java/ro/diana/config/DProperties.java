@@ -4,7 +4,8 @@ package ro.diana.config;
  * Created by diana on 13.04.2015.
  */
 public class DProperties {
-    private String root;
+    private String clientRootUrl;
+
     private static DProperties instance;
 
     private DProperties(){
@@ -17,11 +18,11 @@ public class DProperties {
         return instance;
     }
 
-    public String getRoot() {
-        return root;
+    public String getClientRootUrl() {
+        return clientRootUrl;
     }
 
-    public void setRoot(String root) {
-        this.root = root;
+    public void setClientRootUrl(String clientRootUrl) {
+        this.clientRootUrl = clientRootUrl;
     }
 }

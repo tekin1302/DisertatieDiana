@@ -18,7 +18,12 @@
             <div>
                 <ul>
                     <li ng-repeat="item in historyItems" ng-class="getHistoryItemClass(item)" ng-click="selectHistoryItem(item)">
-                        {{item.date}} - {{item.author}}
+                        <span ng-show="item.date">
+                            {{item.date}} - {{item.user.email}}
+                        </span>
+                        <span ng-show="!item.date">
+                            Prima versiune
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -26,12 +31,12 @@
         <td>
             <div class="row">
                 <div class="col-xs-6">
-                    <textarea class="history" ng-model="historyVersion">
+                    <textarea class="history" ng-model="historyVersion.stringContent">
 
                     </textarea>
                 </div>
                 <div class="col-xs-6">
-                    <textarea class="history" ng-model="currentVersion">
+                    <textarea class="history" ng-model="currentVersion.stringContent">
 
                     </textarea>
                 </div>

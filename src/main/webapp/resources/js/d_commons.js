@@ -201,3 +201,9 @@ function dateFromString (str) {
     str = str.split("-");
     return new Date(str[2], str[1]-1, str[0]);
 }
+function safeApply(scope) {
+    var scopePhase = scope.$root.$$phase;
+    if(scopePhase==null||(scopePhase != '$apply' && scopePhase != '$digest')) {
+        scope.$apply();
+    }
+}

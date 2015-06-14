@@ -1,5 +1,23 @@
-myModule.controller("historyController", function ($scope, $http, $modal, AlertService) {
-    $scope.historyItems = [
+myModule.controller("historyController", function ($scope, $http, $modal, AlertService, files) {
+    $scope.historyItems = files;
+
+    $scope.currentVersion = files[0];
+
+    $scope.applyVersion = function() {
+        AlertService.showSuccess('sm', 'Versiunea a fost aplicata cu succes!', $scope, null);
+    }
+
+    $scope.getHistoryItemClass = function(item) {
+        if ($scope.historyVersion && $scope.historyVersion.id === item.id) {
+            return "history-item-selected";
+        }
+    }
+    $scope.selectHistoryItem = function(item) {
+        $scope.historyVersion = item;
+    }
+    $scope.selectHistoryItem(files[1]);
+
+    $scope.historyItems2 = [
         {id: 1, date: '13-02-2015 10:44:23', author: 'Vasile Bordea'},
         {id: 2, date: '13-02-2015 11:13:22', author: 'Vasile Bordea'},
         {id: 3, date: '13-02-2015 12:30:02', author: 'Diana Diaconu'},
@@ -42,23 +60,12 @@ myModule.controller("historyController", function ($scope, $http, $modal, AlertS
         {id: 40, date: '15-07-2015 11:44:23', author: 'Ana Popescu'}
     ];
 
-    $http.get('resources/js/services/app.js').success(function(data){
+/*    $http.get('resources/js/services/app.js').success(function(data){
         $scope.historyVersion = data;
     });
     $http.get('resources/js/services/app.js').success(function(data){
         $scope.currentVersion = data;
     });
+*/
 
-    $scope.applyVersion = function() {
-        AlertService.showSuccess('sm', 'Versiunea a fost aplicata cu succes!', $scope, null);
-    }
-
-    $scope.getHistoryItemClass = function(item) {
-        if ($scope.selectedItem && $scope.selectedItem.id === item.id) {
-            return "history-item-selected";
-        }
-    }
-    $scope.selectHistoryItem = function(item) {
-        $scope.selectedItem = item;
-    }
 });

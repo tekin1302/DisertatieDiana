@@ -23,11 +23,19 @@ var myModule = angular.module("myAppModule", ['ngResource', 'ngRoute', 'angularF
                 data:{
                     authorizedRoles:[USER_ROLES.all]
                 }
-            }).when("/history",{
+            }).when("/history/:path",{
                 templateUrl: 'resources/views/history.html',
                 controller: 'historyController',
                 data: {
                     authorizedRoles: [USER_ROLES.ROLE_USER]
+                },
+                resolve: {
+                    files: function($http, $route) {
+                        var path = encodeURI($route.current.params.path);
+                        return $http.get('fileHistory/list?filePath=' + path).then(function(response){
+                            return response.data;
+                        });
+                    }
                 }
             }).when("/logs",{
                 templateUrl: 'resources/views/logs.html',

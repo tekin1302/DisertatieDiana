@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="20150607144013#1" author="diana">
+        <createTable tableName="T_FILE_HISTORY">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="path" type="varchar(2000)" />
+            <column name="content" type="blob" />
+            <column name="user_id" type="integer" />
+            <column name="date" type="datetime" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20150607144013#2" author="diana">
+        <addForeignKeyConstraint baseTableName="T_FILE_HISTORY" baseColumnNames="user_id" constraintName="FK_HISTORY_USER"
+                                 referencedTableName="T_USER"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="20150607144013#3" author="diana">
+        <createTable tableName="T_EXTENSION">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="extension" type="varchar(10)" />
+            <column name="is_text" type="bit" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20150607144013#4" author="diana">
+        <addColumn tableName="T_FILE_HISTORY">
+            <column name="extension_id" type="integer" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150607144013#5" author="diana">
+        <addForeignKeyConstraint baseTableName="T_FILE_HISTORY" baseColumnNames="extension_id" constraintName="fk_file_extension"
+                                 referencedTableName="T_EXTENSION"
+                                 referencedColumnNames="ID" />
+    </changeSet>
+
+    <changeSet id="20150607144013#6" author="diana">
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/extensions.csv"
+                  separator=";"
+                  tableName="T_EXTENSION">
+            <column name="is_text" type="boolean" />
+        </loadData>
+
+    </changeSet>
+</databaseChangeLog>

@@ -6,7 +6,9 @@
  http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
 
     <persistence-unit name="DISERTATIE" transaction-type="RESOURCE_LOCAL">
-
+        <properties>
+            <property name = "hibernate.show_sql" value = "true" />
+        </properties>
     </persistence-unit>
 
 </persistence>

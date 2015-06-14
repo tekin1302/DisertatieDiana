@@ -10,7 +10,7 @@
     <http auto-config="true" access-denied-page="/login/denied">
         <form-login login-processing-url="/authenticate" login-page="/login/needAuth"
                     username-parameter="d_username" password-parameter="d_password"
-                    authentication-failure-url="/login/needAuth"  />
+                    authentication-failure-url="/login/failure"  />
         <logout logout-url="/logout" />
 
         <intercept-url pattern="/protected/**" access="IS_AUTHENTICATED_FULLY" />

@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * Created by tekin on 2/11/14.
+ * Created by diana on 2/11/14.
  */
 public class DUserDetails implements UserDetails {
 

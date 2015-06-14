@@ -14,7 +14,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 /**
  * 
- * @author tekin
+ * @author diana
  * 
  * Encryption contains encryption tools.
  * 

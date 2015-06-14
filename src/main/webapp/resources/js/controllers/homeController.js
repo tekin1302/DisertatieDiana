@@ -1,10 +1,24 @@
-myModule.controller("homeController", function ($scope) {
+var homeScope;
+myModule.controller("homeController", function ($scope, $location, CompileSvc) {
+    homeScope = $scope;
     initTree();
     $scope.compile =  function() {
-        compileSources();
+//        compileSources();
+        $("#simcp-cloak").css("display", "block");
+        CompileSvc.compile({path: $scope.selectedFilePath, content: $("#decompileText").val()}, function(data) {
+            $("#simcp-cloak").css("display", "none");
+            if (data){
+                $("#divError").css('display','inline');
+                $("#divErrorInner").html("<strong>Error!</strong> " + data);
+            } else {
+                $("#divError").css('display','none');
+            }
+        });
     };
 
-
+    $scope.showHistory = function() {
+        $location.path("/history/" + $scope.selectedFilePath);
+    }
 });
 var nodeSelected = null;
 function initTree(){
@@ -69,6 +83,8 @@ function initTree(){
 
     $('#jstree').on("select_node.jstree", function (e, data) {
         nodeSelected = data.selected;
+        homeScope.selectedFilePath = data.selected;
+        safeApply(homeScope);
         console.log(data.selected);
         $.ajax({
             url: "getContent",
@@ -80,7 +96,7 @@ function initTree(){
 }
 
 var compileSources = function(){
-    $("#simcp-cloak").css("display", "block");
+
     $.ajax({
         type: "POST",
         url: "compileFile",

@@ -34,14 +34,14 @@ public class LogsController {
 
     @RequestMapping("/list")
     public void getAllLogs(HttpServletResponse resp) throws Exception {
-        byte[] bytes = httpService.doGetRequest("http://localhost:8080/read/?logs");
+        byte[] bytes = httpService.doGetRequest(DProperties.getInstance().getClientRootUrl() + "?logs");
         resp.getOutputStream().write(bytes);
     }
 
     @RequestMapping("/")
     public void getLog(@RequestParam("name") String log, HttpServletResponse resp) throws Exception {
         log = URLDecoder.decode(log, "UTF-8");
-        byte[] bytes = httpService.doGetRequest("http://localhost:8080/read/?log=" + log);
+        byte[] bytes = httpService.doGetRequest(DProperties.getInstance().getClientRootUrl() + "?log=" + log);
         resp.getOutputStream().write(bytes);
     }
 }

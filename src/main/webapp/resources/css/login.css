@@ -71,3 +71,9 @@ td {
 #logs li.active>a {
     background-color: #f5f5f5 !important;
 }
+.errors {
+    color: #FF0000;
+}
+a {
+    cursor: pointer;
+}
