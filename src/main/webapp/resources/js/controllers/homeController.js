@@ -3,16 +3,10 @@ myModule.controller("homeController", function ($scope, $location, CompileSvc) {
     homeScope = $scope;
     initTree();
     $scope.compile =  function() {
-//        compileSources();
         $("#simcp-cloak").css("display", "block");
         CompileSvc.compile({path: $scope.selectedFilePath, content: $("#decompileText").val()}, function(data) {
             $("#simcp-cloak").css("display", "none");
-            if (data){
-                $("#divError").css('display','inline');
-                $("#divErrorInner").html("<strong>Error!</strong> " + data);
-            } else {
-                $("#divError").css('display','none');
-            }
+            $scope.compileResult = data;
         });
     };
 
@@ -83,7 +77,9 @@ function initTree(){
 
     $('#jstree').on("select_node.jstree", function (e, data) {
         nodeSelected = data.selected;
-        homeScope.selectedFilePath = data.selected;
+        if (angular.isArray)
+        homeScope.selectedFilePath = angular.isArray(data.selected)? data.selected[0] : data.selected;
+        homeScope.compileResult = null;
         safeApply(homeScope);
         console.log(data.selected);
         $.ajax({
@@ -92,22 +88,5 @@ function initTree(){
         }).done(function(data) {
             $("#decompileText").val(data);
         });
-    });
-}
-
-var compileSources = function(){
-
-    $.ajax({
-        type: "POST",
-        url: "compileFile",
-        data: { urlpath: '' + nodeSelected, content: $("#decompileText").val()}
-    }).done(function(data) {
-        $("#simcp-cloak").css("display", "none");
-        if (data){
-            $("#divError").css('display','inline');
-            $("#divErrorInner").html("<strong>Error!</strong> " + data);
-        } else {
-            $("#divError").css('display','none');
-        }
     });
 }

@@ -1,7 +1,9 @@
 myModule
-    .factory('CompileSvc', function ($resource) {
-        return $resource('compileFile', {}, {
-            compile: { method: 'POST'}
-        })
+    .factory('CompileSvc', function ($http) {
+        return {
+            compile : function (obj, fn) {
+                $http.post('compileFile', obj).success(fn);
+            }
+        }
     })
 ;

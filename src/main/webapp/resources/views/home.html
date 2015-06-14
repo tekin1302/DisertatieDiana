@@ -6,9 +6,14 @@
                 </div>
             </div>
             <div class="col-xs-6">
-                <div class="bs-example" style="display: none;" id="divError">
+                <div class="bs-example" id="divError" ng-show="compileResult && compileResult.length > 0">
                     <div class="alert alert-danger alert-error" id="divErrorInner">
-
+                        Eroare: {{compileResult}}
+                    </div>
+                </div>
+                <div class="bs-example" id="divSuccess" ng-show="compileResult.length == 0">
+                    <div class="alert alert-success" id="divSuccessInner">
+                        Modificarea a fost efectuata cu succes.
                     </div>
                 </div>
                 <textarea id = "decompileText" class="form-control" rows="30"></textarea><br/>
